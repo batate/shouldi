@@ -1,4 +1,4 @@
-Shouldi
+ShouldI
 =======
 
 ExUnit is fine for small, simple applications, but when you want to do more complex test cases, it has limitations. ShouldI provides nested contexts to eliminate duplication in tests, and has better support for naming tests based on behavior. This API is based on the shoulda framework for Ruby on Rails. 
