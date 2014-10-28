@@ -4,8 +4,16 @@ defmodule Shouldi.Mixfile do
   def project do
     [app: :shouldi,
      version: "0.0.1",
-     elixir: "~> 1.0.0",
-     deps: deps]
+     elixir: "~> 1.0",
+     deps: deps,
+     name: "ShouldI",
+     source_url: "https://github.com/batate/shouldi",
+     docs: fn ->
+       {ref, 0} = System.cmd("git", ["rev-parse", "--verify", "--quiet", "HEAD"])
+       [source_ref: ref, main: "README", readme: true]
+     end,
+     description: "Elixir testing libraries with support for nested contexts",
+     package: package]
   end
 
   # Configuration for the OTP application
@@ -15,16 +23,14 @@ defmodule Shouldi.Mixfile do
     [applications: [:logger]]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:mydep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
-  #
-  # Type `mix help deps` for more examples and options
   defp deps do
-    []
+    [{:ex_doc, only: :dev},
+     {:earmark, only: :dev}]
+  end
+
+  defp package do
+    [contributors: ["Bruce Tate", "Eric Meadows-Jönsson"],
+     licenses: ["Apache 2.0"],
+     links: %{"Github" => "https://github.com/batate/shouldi"}]
   end
 end
