@@ -37,9 +37,9 @@ defmodule ShouldI do
     end
   end
 
-  defmacro with(string, [do: block]) do
+  defmacro with(description, [do: block]) do
 
-    module = string
+    module = "with #{description}"
           |> String.split(~r"\W")
           |> Enum.map(&String.capitalize/1)
           |> Enum.join
