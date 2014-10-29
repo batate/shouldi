@@ -2,8 +2,10 @@ defmodule ShouldI do
 
   defmacro __using__(_) do
     quote do
-      use ExUnit.Case
+      use ExUnit.Case, except: [setup: 1, setup: 2]
+      import ExUnit.Callbacks, except: [setup: 1, setup: 2]
       import ShouldI, except: [setup: 1, setup: 2]
+      import ShouldI.OuterSetup
     end
   end
 
@@ -24,7 +26,7 @@ defmodule ShouldI do
       ExUnit.Callbacks.setup(context) do
         {:ok, unquote(context_name)} = @calling_module.__ex_unit__(:setup, context)
 
-        unquote(block)
+        { :ok, unquote(block) }
       end
     end
   end
@@ -51,8 +53,20 @@ defmodule ShouldI do
         use ExUnit.Case
         import ExUnit.Callbacks, except: [setup: 1, setup: 2]
         import ShouldI
+        import ShouldI.OuterSetup, except: [setup: 1, setup: 2]
         @calling_module unquote( calling_module )
         unquote(block)
+      end
+    end
+  end
+  
+  defmodule OuterSetup do
+    defmacro setup(context_name, [do: block]) do
+      quote do
+        ExUnit.Callbacks.setup(context) do
+          unquote(context_name) = context
+          {:ok, unquote(block)}
+        end
       end
     end
   end
