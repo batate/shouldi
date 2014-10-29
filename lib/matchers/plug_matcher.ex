@@ -1,4 +1,4 @@
-defmodule ShouldI.Matchers.Plug do
+defmodule Shouldi.Matchers.Plug do
   import ExUnit.Assertions
   
   defmacro should_respond_with expected_result do
@@ -18,15 +18,15 @@ defmodule ShouldI.Matchers.Plug do
   end
   
   def should_respond_with( :bad_request, context ) do
-    assert context.conn.status == 400
+    assert context.connection.status == 400
   end
   
   def should_respond_with( :unauthorized, context ) do
-    assert context.conn.status == 401
+    assert context.connection.status == 401
   end
   
   def plug_should_respond_with( :missing, context ) do
-    assert context.conn.status == 404
+    assert context.connection.status == 404
   end
   
   def plug_should_respond_with( :error, context ) do
