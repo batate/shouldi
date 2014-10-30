@@ -1,4 +1,4 @@
-defmodule Shouldi.Matchers.Plug do
+defmodule ShouldI.Matchers.Plug do
   import ExUnit.Assertions
   
   defmacro should_respond_with expected_result do
@@ -17,11 +17,11 @@ defmodule Shouldi.Matchers.Plug do
     assert Enum.member?( Enum.to_list(300..399), context.connection.status )
   end
   
-  def should_respond_with( :bad_request, context ) do
+  def plug_should_respond_with( :bad_request, context ) do
     assert context.connection.status == 400
   end
   
-  def should_respond_with( :unauthorized, context ) do
+  def plug_should_respond_with( :unauthorized, context ) do
     assert context.connection.status == 401
   end
   
@@ -33,4 +33,11 @@ defmodule Shouldi.Matchers.Plug do
     assert Enum.member?( Enum.to_list(500..599), context.connection.status )
   end
   
+  defmacro should_match_body_to expected do
+    quote do
+      should "match body to #{unquote(expected)}", context do
+        assert context.connection.resp_body =~ ~r"#{unquote(expected)}"
+      end
+    end
+  end
 end

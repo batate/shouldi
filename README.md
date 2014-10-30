@@ -110,7 +110,7 @@ This approach is much nicer than the alternatives when you're testing something 
   
 ~~~
 
-Finally, you can package macros that write your own tests. We plan to provide some shouldi matchers for plug. 
+Finally, you can package macros that write your own tests. Matchers encode common assertion patterns. For example, our plug matchers 
 
 ~~~
   with "a logged in admin" do

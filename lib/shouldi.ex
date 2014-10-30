@@ -70,4 +70,8 @@ defmodule ShouldI do
       end
     end
   end
+  
+  def assign context, options do
+    Dict.merge context, options
+  end
 end
