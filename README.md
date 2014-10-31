@@ -5,7 +5,19 @@ ExUnit is fine for small, simple applications, but when you want to do more comp
 
 Installation
 ------------
-Just add the hex dependency and add
+Just add the hex dependency to your mix file:
+
+~~~
+  defp deps do
+    [...
+     {:shouldi, env: :test}
+     ...]
+  end
+~~~
+
+
+
+and add
 
 ~~~
 ...
