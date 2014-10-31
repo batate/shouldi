@@ -9,6 +9,17 @@ defmodule ShouldI do
     end
   end
 
+  defmacro uid(id \\ nil) do
+    {function, _} = __CALLER__.function
+    if String.starts_with?(Atom.to_string(function), "test ") do
+      "#{__CALLER__.module}.#{function} #{id}"
+    else
+      quote do
+        "#{var!(context).case}.#{var!(context).test} #{unquote(id)}"
+      end
+    end
+  end
+
   defmacro should(name, options) do
     quote do
       test("should #{unquote name}", unquote(options))
