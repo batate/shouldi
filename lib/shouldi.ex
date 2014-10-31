@@ -39,14 +39,13 @@ defmodule ShouldI do
 
   defmacro with(description, [do: block]) do
 
-    module = "with #{description}"
-          |> String.split(~r"\W")
-          |> Enum.map(&String.capitalize/1)
-          |> Enum.join
-          |> List.wrap
-          |> Module.concat
+    this_module = "with #{description}"
+               |> String.split(~r"\W")
+               |> Enum.map(&String.capitalize/1)
+               |> Enum.join
 
     calling_module = __CALLER__.module
+    module = Module.concat(calling_module, this_module)
 
     quote do
       defmodule unquote(module) do
@@ -59,7 +58,7 @@ defmodule ShouldI do
       end
     end
   end
-  
+
   defmodule OuterSetup do
     defmacro setup(context_name, [do: block]) do
       quote do
@@ -70,7 +69,7 @@ defmodule ShouldI do
       end
     end
   end
-  
+
   def assign context, options do
     Dict.merge context, options
   end

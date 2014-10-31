@@ -17,6 +17,10 @@ defmodule ShouldTest do
     test "should add inner and outer keywords", context do
       assert context[:setup] == :inner
     end
+
+    test "should namespace with module" do
+      assert __MODULE__ == ShouldTest.WithAnInnerModule
+    end
   end
 end
 
