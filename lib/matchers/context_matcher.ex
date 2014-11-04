@@ -24,7 +24,7 @@ defmodule ShouldI.Matchers.Context do
   end
 
   @doc """
-  Pattern match against context[key]
+  Pattern match against `context[key]`
 
   ## Examples
 
@@ -83,7 +83,7 @@ defmodule ShouldI.Matchers.Context do
 
   defp interpolate({:^, meta, [expr]}, binds) do
     var = {:"var#{length(binds)}", meta, __MODULE__}
-    {var, [{var, expr}|binds]}
+    {{:^, meta, [var]}, [{var, expr}|binds]}
   end
 
   defp interpolate({func, meta, args}, binds) do

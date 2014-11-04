@@ -8,11 +8,11 @@ Installation
 Just add the hex dependency to your mix file:
 
 ~~~
-  defp deps do
-    [...
-     {:shouldi, env: :test}
-     ...]
-  end
+defp deps do
+  [...
+   {:shouldi, env: :test}
+   ...]
+end
 ~~~
 
 
