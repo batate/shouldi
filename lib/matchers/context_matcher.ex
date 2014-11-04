@@ -33,10 +33,12 @@ defmodule ShouldI.Matchers.Context do
 
   """
   defmacro should_match_key [{key, expected}] do
+    string = Macro.to_string(expected)
+    {expected, binds} = interpolate(expected)
     quote do
-      should "match context[#{unquote key}]  to #{Macro.to_string(unquote(Macro.escape(expected)))}", context do
-
-        assert unquote(expected) = context[unquote(key)]
+      should "match context[#{unquote key}] to #{unquote string}", var!(context) do
+        unquote(binds)
+        assert unquote(expected) = var!(context)[unquote(key)]
       end
     end
   end
@@ -73,5 +75,40 @@ defmodule ShouldI.Matchers.Context do
         assert !Enum.member?( (Dict.keys context), unquote(key))
       end
     end
+  end
+
+  defp interpolate(ast) do
+    {ast, binds} = interpolate(ast, [])
+
+    binds = binds
+         |> Enum.reverse
+         |> Enum.map(fn {{_, meta, _} = var, expr} -> {:=, meta, [var, expr]} end)
+
+    {ast, binds}
+  end
+
+  defp interpolate({:^, meta, [expr]}, binds) do
+    var = {:"var#{length(binds)}", meta, __MODULE__}
+    {var, [{var, expr}|binds]}
+  end
+
+  defp interpolate({func, meta, args}, binds) do
+    {func, binds} = interpolate(func, binds)
+    {args, binds} = interpolate(args, binds)
+    {{func, meta, args}, binds}
+  end
+
+  defp interpolate({left, right}, binds) do
+    {left, binds} = interpolate(left, binds)
+    {right, binds} = interpolate(right, binds)
+    {{left, right}, binds}
+  end
+
+  defp interpolate(list, binds) when is_list(list) do
+    Enum.map_reduce(list, binds, &interpolate/2)
+  end
+
+  defp interpolate(ast, binds) do
+    {ast, binds}
   end
 end
