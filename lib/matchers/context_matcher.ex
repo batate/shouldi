@@ -1,19 +1,19 @@
 defmodule ShouldI.Matchers.Context do
   import ExUnit.Assertions
   @moduledoc """
-  Convenience macros for generating short test cases of common strucutre. These matchers work with the context.
+  Convenience macros for generating short test cases of common structure. These matchers work with the context.
   """
 
   @doc """
   Exactly match a key in the context to a value.
 
-  ## exmaples:
-  setup context do
-    assign context, key_from_context_returned_by_setup: "exact expected value"
-  end
+  ## Examples
 
-  should_assign_key key_from_context_returned_by_setup: "exact expected value"
+      setup context do
+        assign context, key_from_context_returned_by_setup: "exact expected value"
+      end
 
+      should_assign_key key_from_context_returned_by_setup: "exact expected value"
   """
   defmacro should_assign_key [{key, value}] do
     quote do
@@ -26,11 +26,9 @@ defmodule ShouldI.Matchers.Context do
   @doc """
   Pattern match against context[key]
 
-  ## exmaples:
-  ...
+  ## Examples
 
-  should_match_key context_key: {:ok, _}
-
+      should_match_key context_key: {:ok, _}
   """
   defmacro should_match_key [{key, expected}] do
     string = Macro.to_string(expected)
@@ -44,13 +42,11 @@ defmodule ShouldI.Matchers.Context do
   end
 
   @doc """
-  Check for existance of a key in the context returned by setup.
+  Check for existence of a key in the context returned by setup.
 
-  ## exmaples:
-  ...
+  ## Examples
 
-  should_have_key :must_be_present
-
+      should_have_key :must_be_present
   """
   defmacro should_have_key key do
     quote do
@@ -61,13 +57,11 @@ defmodule ShouldI.Matchers.Context do
   end
 
   @doc """
-  Negative check for existance of a key in the context returned by setup.
+  Negative check for existence of a key in the context returned by setup.
 
-  ## exmaples:
-  ...
+  ## Examples
 
-  should_not_have_key :must_not_be_present
-
+      should_not_have_key :must_not_be_present
   """
   defmacro should_not_have_key key do
     quote do

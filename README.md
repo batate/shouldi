@@ -38,18 +38,18 @@ Better Names
 When you're testing behavior, you can get better names with a more descriptive macro. The test code...
 
 ~~~
-  test "should return ok on parse" do
-    assert :ok == Parser.parse
-  end
+test "should return ok on parse" do
+  assert :ok == Parser.parse
+end
 ~~~
 
 ...can become more descriptive and shorter with...
 
 
 ~~~
-  should "return :ok on parse" do
-     assert :ok == Parser.parse
-  end
+should "return :ok on parse" do
+   assert :ok == Parser.parse
+end
 ~~~
 
 That's not all. Often test cases in functional languges can have too much repetition. We can eliminte much of that.
@@ -100,41 +100,41 @@ end
 This approach is much nicer than the alternatives when you're testing something like a controller with dramatically different requirements across tests:
 
 ~~~
-  with "a logged in user" do
-    setup context do
-      login context, user
-    end
-    ...
+with "a logged in user" do
+  setup context do
+    login context, user
   end
+  ...
+end
 
-  with "a logged out user" do
+with "a logged out user" do
 
-     ...
+   ...
 
+end
+
+with "a logged in admin" do
+  setup context do
+    login context, admin
   end
-
-  with "a logged in admin" do
-    setup context do
-      login context, admin
-    end
-    ...
-  end
+  ...
+end
 ~~~
 
 Finally, you can package macros that write your own tests. Matchers encode common assertion patterns. For example, our plug matchers
 
 ~~~
-  with "a logged in admin" do
-    setup context do
-      login context, admin
-    end
-    with "a get to :index" do
-      setup context do
-        # process get
-      end
-      should respond_with :success
-    end
+with "a logged in admin" do
+  setup context do
+    login context, admin
   end
+  with "a get to :index" do
+    setup context do
+      # process get
+    end
+    should respond_with :success
+  end
+end
 ~~~
 
 Unique IDs
