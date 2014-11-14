@@ -78,7 +78,7 @@ defmodule MyFatTest do
 
   with "necessary_key" do
     setup context do
-    {:ok, Dict.put context, :necessary_key, :neccessary_value}
+      Dict.put context, :necessary_key, :neccessary_value
     end
 
     should( "have necessary key", context ) do
@@ -87,7 +87,7 @@ defmodule MyFatTest do
 
   with "sometimes_necessary_key" do
     setup context do
-    {:ok, Dict.put context, :sometimes_necessary_key, :sometimes_neccessary_value}
+      Dict.put context, :sometimes_necessary_key, :sometimes_neccessary_value
     end
 
     should( "have necessary key", context ) do
