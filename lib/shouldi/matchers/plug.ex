@@ -1,10 +1,11 @@
 defmodule ShouldI.Matchers.Plug do
-  import ExUnit.Assertions
   @moduledoc """
   Convenience macros for generating short test cases of common structure.
   These matchers work with Plug connections.
   """
 
+  import ExUnit.Assertions
+  import ShouldI.Matcher
 
   @doc """
   The connection status (connection.status) should match the expected result.
@@ -26,20 +27,18 @@ defmodule ShouldI.Matchers.Plug do
 
       should_respond_with :success
   """
-  defmacro should_respond_with expected_result do
+  defmatcher should_respond_with(expected_result) do
     quote do
-      should "respond_with #{unquote(expected_result)}", context do
-        plug_should_respond_with unquote(expected_result), context
-      end
+      plug_should_respond_with(unquote(expected_result), context)
     end
   end
 
   def plug_should_respond_with( :success, context ) do
-    assert Enum.member?( Enum.to_list(200..299), context.connection.status )
+    assert context.connection.status in 200..299
   end
 
   def plug_should_respond_with( :redirect, context ) do
-    assert Enum.member?( Enum.to_list(300..399), context.connection.status )
+    assert context.connection.status in 300..399
   end
 
   def plug_should_respond_with( :bad_request, context ) do
@@ -55,7 +54,7 @@ defmodule ShouldI.Matchers.Plug do
   end
 
   def plug_should_respond_with( :error, context ) do
-    assert Enum.member?( Enum.to_list(500..599), context.connection.status )
+    assert context.connection.status in 500..599
   end
 
   @doc """
@@ -68,11 +67,9 @@ defmodule ShouldI.Matchers.Plug do
       should_match_body_to "this_string_must_be_present_in_body"
 
   """
-  defmacro should_match_body_to expected do
+  defmatcher should_match_body_to(expected) do
     quote do
-      should "match body to #{unquote(expected)}", context do
-        assert context.connection.resp_body =~ ~r"#{unquote(expected)}"
-      end
+      assert context.connection.resp_body =~ ~r"#{unquote(expected)}"
     end
   end
 end

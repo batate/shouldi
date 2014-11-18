@@ -1,8 +1,10 @@
 defmodule ShouldI.Matchers.Context do
-  import ExUnit.Assertions
   @moduledoc """
   Convenience macros for generating short test cases of common structure. These matchers work with the context.
   """
+
+  import ExUnit.Assertions
+  import ShouldI.Matcher
 
   @doc """
   Exactly match a key in the context to a value.
@@ -15,11 +17,9 @@ defmodule ShouldI.Matchers.Context do
 
       should_assign_key key_from_context_returned_by_setup: "exact expected value"
   """
-  defmacro should_assign_key [{key, value}] do
+  defmatcher should_assign_key([{key, value}]) do
     quote do
-      should "set #{unquote key} to #{unquote value}", context do
-        assert context[unquote(key)] == unquote(value)
-      end
+      assert context[unquote(key)] == unquote(value)
     end
   end
 
@@ -30,14 +30,11 @@ defmodule ShouldI.Matchers.Context do
 
       should_match_key context_key: {:ok, _}
   """
-  defmacro should_match_key [{key, expected}] do
-    string = Macro.to_string(expected)
+  defmatcher should_match_key([{key, expected}]) do
     {expected, binds} = interpolate(expected)
     quote do
-      should "match context[#{unquote key}] to #{unquote string}", var!(context) do
-        unquote(binds)
-        assert unquote(expected) = var!(context)[unquote(key)]
-      end
+      unquote(binds)
+      assert unquote(expected) = context[unquote(key)]
     end
   end
 
@@ -48,11 +45,9 @@ defmodule ShouldI.Matchers.Context do
 
       should_have_key :must_be_present
   """
-  defmacro should_have_key key do
+  defmatcher should_have_key(key) do
     quote do
-      should "have key #{unquote key}", context do
-        assert Enum.member?( (Dict.keys context), unquote(key))
-      end
+      assert Dict.has_key?(context, unquote(key))
     end
   end
 
@@ -63,11 +58,9 @@ defmodule ShouldI.Matchers.Context do
 
       should_not_have_key :must_not_be_present
   """
-  defmacro should_not_have_key key do
+  defmatcher should_not_have_key(key) do
     quote do
-      should "not have key #{unquote key}", context do
-        assert !Enum.member?( (Dict.keys context), unquote(key))
-      end
+      refute Dict.has_key?(context, unquote(key))
     end
   end
 

@@ -1,4 +1,5 @@
 defmodule ContextMatcherTest do
+  use ExUnit.Case
   use ShouldI
   import ShouldI.Matchers.Context
 
@@ -34,6 +35,4 @@ defmodule ContextMatcherTest do
 
     should_assign_key one: "one"
   end
-
-
 end

@@ -47,9 +47,14 @@ defmodule ShouldI do
     quote do
       @shouldi_with_path []
 
-      import ExUnit.Callbacks, except: [setup: 1, setup: 2]
-      import ExUnit.Case, except: [test: 2, test: 3]
       import ShouldI
+      import ExUnit.Callbacks, except: [setup: 1, setup: 2]
+    end
+  end
+
+  defmacro setup(var \\ quote(do: _), block) do
+    quote do
+      ExUnit.Callbacks.setup(unquote(var), do: {:ok, unquote(block) })
     end
   end
 
@@ -71,14 +76,6 @@ defmodule ShouldI do
         "#{var!(context).case}.#{var!(context).test} #{unquote(id)}"
       end
     end
-  end
-
-  defmacro test(name, var \\ quote(do: _), opts) do
-    ShouldI.With.test(__CALLER__, name, var, opts)
-  end
-
-  defmacro setup(var \\ quote(do: _), opts) do
-    ShouldI.With.setup(__CALLER__, var, opts)
   end
 
   @doc """

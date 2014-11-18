@@ -1,5 +1,7 @@
 defmodule ShouldTest do
+  use ExUnit.Case
   use ShouldI
+
   setup context do
     Map.put(context, :setup, :outer)
     Dict.put( context, :outer, :setup)
@@ -20,13 +22,21 @@ defmodule ShouldTest do
       assert context[:setup] == :inner
     end
 
-    test "should namespace with module" do
-      assert __MODULE__ == ShouldTest.WithAnInnerModule
-    end
-
     test "should set uid for both setup and test", context do
       assert uid("foo") == context[:uid]
-      assert uid("bar") == "Elixir.ShouldTest.WithAnInnerModule.test should set uid for both setup and test bar"
+      assert uid("bar") == "Elixir.ShouldTest.test with: an inner module: should set uid for both setup and test bar"
+    end
+
+    with "another inner module" do
+      setup(context) do
+        context
+        |> Dict.put(:setup2, :even_more_inner)
+      end
+
+      test "should access inner and outer", context do
+        assert context[:setup] == :inner
+        assert context[:setup2] == :even_more_inner
+      end
     end
   end
 end
