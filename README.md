@@ -9,9 +9,7 @@ Just add the hex dependency to your mix file:
 
 ~~~elixir
 defp deps do
-  [...
-   {:shouldi, env: :test}
-   ...]
+  [{:shouldi, only: :test}]
 end
 ~~~
 
@@ -104,19 +102,19 @@ with "a logged in user" do
   setup context do
     login context, user
   end
+
   ...
 end
 
 with "a logged out user" do
-
    ...
-
 end
 
 with "a logged in admin" do
   setup context do
     login context, admin
   end
+
   ...
 end
 ~~~
@@ -128,6 +126,7 @@ with "a logged in admin" do
   setup context do
     login context, admin
   end
+
   with "a get to :index" do
     setup context do
       # process get

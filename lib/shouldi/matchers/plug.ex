@@ -12,12 +12,12 @@ defmodule ShouldI.Matchers.Plug do
 
   Rather than match a specific value, the matchers work against ranges:
 
-  success:       (200...299)
-  redirect:      (300...399)
-  bad_request:   400
-  unauthorized:  401
-  missing:       404
-  error:         (500..599)
+      success:       (200...299)
+      redirect:      (300...399)
+      bad_request:   400
+      unauthorized:  401
+      missing:       404
+      error:         (500..599)
 
   ## Examples
 
@@ -65,7 +65,6 @@ defmodule ShouldI.Matchers.Plug do
       end
 
       should_match_body_to "this_string_must_be_present_in_body"
-
   """
   defmatcher should_match_body_to(expected) do
     quote do
