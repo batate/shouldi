@@ -2,7 +2,7 @@ defmodule ShouldI.With do
   @moduledoc false
 
   def with(_env, context, [do: block]) do
-    quote =
+    quote1 =
       quote do
         import ExUnit.Callbacks, except: [setup: 1, setup: 2]
         import ExUnit.Case, except: [test: 2, test: 3]
@@ -16,19 +16,36 @@ defmodule ShouldI.With do
         unquote(block)
       end
 
-    quote bind_quoted: [quote: quote] do
-      quote
+    quote2 =
+      quote unquote: false do
+        matchers = @shouldi_matchers
+                |> Enum.reverse
+                |> prepare_matchers
 
-      matchers = Keyword.values(@shouldi_matchers) |> Enum.reverse
+        if matchers != [] do
+          @tag shouldi_with_path: @shouldi_with_path
+          ExUnit.Case.test test_name(__MODULE__, "matchers"), var!(context) do
+            _ = var!(context)
+            matcher_errors = unquote(matchers)
+            matcher_errors = Enum.reject(matcher_errors, &is_nil/1)
 
-      # test "matchers", var!(context) do
-      @tag shouldi_with_path: @shouldi_with_path
-      ExUnit.Case.test test_name(__MODULE__, "matchers"), var!(context) do
-        _ = var!(context)
-        unquote(matchers)
+            if matcher_errors != [] do
+              raise ShouldI.MultiError, errors: matcher_errors
+            end
+          end
+        end
+
+        @shouldi_with_path path
       end
 
-      @shouldi_with_path path
+    quote do
+      # Do not leak imports
+      try do
+        unquote(quote1)
+        unquote(quote2)
+      after
+        :ok
+      end
     end
   end
 
@@ -77,17 +94,18 @@ defmodule ShouldI.With do
   def starts_with?(_, _),
     do: false
 
-  # def prepare_matchers(matchers) do
-  #   Enum.map(matchers, fn {name, code} ->
-  #     quote do
-  #       try do
-  #         unquote(code)
-  #       catch
-  #         kind, error ->
-  #           stacktrace = System.stacktrace
-  #           errors = [{unquote(name), {kind, error, stacktrace}}|errors]
-  #       end
-  #     end
-  #   end)
-  # end
+  def prepare_matchers(matchers) do
+    Enum.map(matchers, fn {call, code} ->
+      quote do
+        try do
+          unquote(code)
+          nil
+        catch
+          kind, error ->
+            stacktrace = System.stacktrace
+            {unquote(Macro.escape(call)), {kind, error, stacktrace}}
+        end
+      end
+    end)
+  end
 end

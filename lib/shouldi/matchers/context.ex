@@ -19,7 +19,7 @@ defmodule ShouldI.Matchers.Context do
   """
   defmatcher should_assign_key([{key, value}]) do
     quote do
-      assert context[unquote(key)] == unquote(value)
+      assert var!(context)[unquote(key)] == unquote(value)
     end
   end
 
@@ -34,7 +34,7 @@ defmodule ShouldI.Matchers.Context do
     {expected, binds} = interpolate(expected)
     quote do
       unquote(binds)
-      assert unquote(expected) = context[unquote(key)]
+      assert unquote(expected) = var!(context)[unquote(key)]
     end
   end
 
@@ -47,7 +47,7 @@ defmodule ShouldI.Matchers.Context do
   """
   defmatcher should_have_key(key) do
     quote do
-      assert Dict.has_key?(context, unquote(key))
+      assert Dict.has_key?(var!(context), unquote(key))
     end
   end
 
@@ -60,7 +60,7 @@ defmodule ShouldI.Matchers.Context do
   """
   defmatcher should_not_have_key(key) do
     quote do
-      refute Dict.has_key?(context, unquote(key))
+      refute Dict.has_key?(var!(context), unquote(key))
     end
   end
 

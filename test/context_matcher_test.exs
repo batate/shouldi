@@ -10,11 +10,13 @@ defmodule ContextMatcherTest do
       tuple_one: {:ok, 2}
   end
 
-  should_assign_key one: 1
-  should_have_key :one
-  should_not_have_key :two
-  should_match_key tuple: {:ok, _}
-  should_match_key tuple_one: {:ok, ^(context[:one] + context[:one])}
+  with "context" do
+    should_assign_key one: 1
+    should_have_key :one
+    should_not_have_key :two
+    should_match_key tuple: {:ok, _}
+    should_match_key tuple_one: {:ok, ^(context[:one] + context[:one])}
+  end
 
   with "another level" do
     setup context do

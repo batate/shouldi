@@ -29,7 +29,7 @@ defmodule ShouldI.Matchers.Plug do
   """
   defmatcher should_respond_with(expected_result) do
     quote do
-      plug_should_respond_with(unquote(expected_result), context)
+      plug_should_respond_with(unquote(expected_result), var!(context))
     end
   end
 
@@ -68,7 +68,7 @@ defmodule ShouldI.Matchers.Plug do
   """
   defmatcher should_match_body_to(expected) do
     quote do
-      assert context.connection.resp_body =~ ~r"#{unquote(expected)}"
+      assert var!(context).connection.resp_body =~ ~r"#{unquote(expected)}"
     end
   end
 end

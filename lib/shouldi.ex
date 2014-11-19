@@ -48,9 +48,9 @@ defmodule ShouldI do
     end
   end
 
-  defmacro setup(var \\ quote(do: _), block) do
+  defmacro setup(var \\ quote(do: _), [do: block]) do
     quote do
-      ExUnit.Callbacks.setup(unquote(var), do: {:ok, unquote(block) })
+      ExUnit.Callbacks.setup(unquote(var), do: {:ok, unquote(block)})
     end
   end
 
@@ -119,5 +119,13 @@ defmodule ShouldI do
   """
   def assign(context, options) do
     Dict.merge(context, options)
+  end
+end
+
+defmodule ShouldI.MultiError do
+  defexception [:errors]
+
+  def message(_) do
+    "multiple matcher errors"
   end
 end

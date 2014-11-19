@@ -10,6 +10,8 @@ defmodule PlugMatcherTest do
      })
   end
 
-  should_respond_with :success
-  should_match_body_to "test"
+  with "context" do
+    should_respond_with :success
+    should_match_body_to "test"
+  end
 end
