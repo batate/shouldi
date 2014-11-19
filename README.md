@@ -159,13 +159,13 @@ Existing Matchers
 -----------------
 
 - Context
-- - `should_assign_key key, value`: assert that the value for `key` in the context is `value`
-- - `should_match_key key, expected`: assert that the value for `key` in the context satisfies the pattern match `expected`
-- - `should_have_key key`: assert that `key` exists in the context
-- - `should_not_have_key key`: assert that `key` does not exist in the context
+    - `should_assign_key key, value`: assert that the value for `key` in the context is `value`
+    - `should_match_key key, expected`: assert that the value for `key` in the context satisfies the pattern match `expected`
+    - `should_have_key key`: assert that `key` exists in the context
+    - `should_not_have_key key`: assert that `key` does not exist in the context
 - Plug
-- - `should_respond_with expected`: Assert that the value for `context.connection.status` in the context matches a reasonable value for `:success`, `:redirect`, `:bad_request`, `:unauthorized`, `:missing` or `:error`
-- - `should_match_body_to expected`: Assert that the value for `context.resp_body` contains the text `expected`.
+    - `should_respond_with expected`: Assert that the value for `context.connection.status` in the context matches a reasonable value for `:success`, `:redirect`, `:bad_request`, `:unauthorized`, `:missing` or `:error`
+    - `should_match_body_to expected`: Assert that the value for `context.resp_body` contains the text `expected`.
 
 Unique IDs
 ----------
