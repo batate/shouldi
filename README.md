@@ -52,7 +52,7 @@ should "return :ok on parse" do
 end
 ~~~
 
-That's not all. Often test cases in functional languges can have too much repetition. We can eliminte much of that.
+That's not all. Often test cases in functional languages can have too much repetition. We can eliminate much of that.
 
 Nested Contexts
 ---------------
@@ -62,7 +62,7 @@ Say you have a test case that needs some setup. ExUnit has support for a context
 ~~~elixir
 defmodule MyFlatTest do
   setup context do
-    {:ok, Dict.put context, :necessary_key, :neccessary_value}
+    {:ok, Dict.put context, :necessary_key, :necessary_value}
   end
 
   test( "this test needs :necessary_key", context ) do
@@ -78,7 +78,7 @@ defmodule MyFatTest do
 
   with "necessary_key" do
     setup context do
-      Dict.put context, :necessary_key, :neccessary_value
+      Dict.put context, :necessary_key, :necessary_value
     end
 
     should( "have necessary key", context ) do
@@ -87,7 +87,7 @@ defmodule MyFatTest do
 
   with "sometimes_necessary_key" do
     setup context do
-      Dict.put context, :sometimes_necessary_key, :sometimes_neccessary_value
+      Dict.put context, :sometimes_necessary_key, :sometimes_necessary_value
     end
 
     should( "have necessary key", context ) do
