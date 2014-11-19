@@ -7,7 +7,7 @@ Installation
 ------------
 Just add the hex dependency to your mix file:
 
-~~~
+~~~elixir
 defp deps do
   [...
    {:shouldi, env: :test}
@@ -19,7 +19,7 @@ end
 
 and add
 
-~~~
+~~~elixir
 ...
 use ShouldI
 ...
@@ -27,7 +27,7 @@ use ShouldI
 
 to your test script in place of
 
-~~~
+~~~elixir
 ...
 use ExUnit.Case
 ...
@@ -37,7 +37,7 @@ Better Names
 ------------
 When you're testing behavior, you can get better names with a more descriptive macro. The test code...
 
-~~~
+~~~elixir
 test "should return ok on parse" do
   assert :ok == Parser.parse
 end
@@ -46,7 +46,7 @@ end
 ...can become more descriptive and shorter with...
 
 
-~~~
+~~~elixir
 should "return :ok on parse" do
    assert :ok == Parser.parse
 end
@@ -59,7 +59,7 @@ Nested Contexts
 
 Say you have a test case that needs some setup. ExUnit has support for a context that can be set once, and passed to all clients. You can use the `setup` method to pass a map to each of your test cases, like this:
 
-~~~
+~~~elixir
 defmodule MyFlatTest do
   setup context do
     {:ok, Dict.put context, :necessary_key, :neccessary_value}
@@ -73,7 +73,7 @@ end
 
 This approach breaks down when several, but not all, tests need the same set of values. ShouldI solves this problem with nested contexts, which you can provide with the `with` keyword, like this:
 
-~~~
+~~~elixir
 defmodule MyFatTest do
 
   with "necessary_key" do
@@ -99,7 +99,7 @@ end
 
 This approach is much nicer than the alternatives when you're testing something like a controller with dramatically different requirements across tests:
 
-~~~
+~~~elixir
 with "a logged in user" do
   setup context do
     login context, user
@@ -123,7 +123,7 @@ end
 
 Finally, you can package macros that write your own tests. Matchers encode common assertion patterns. For example, our plug matchers
 
-~~~
+~~~elixir
 with "a logged in admin" do
   setup context do
     login context, admin
