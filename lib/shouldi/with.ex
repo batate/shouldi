@@ -24,7 +24,7 @@ defmodule ShouldI.With do
 
         if matchers != [] do
           @tag shouldi_with_path: @shouldi_with_path
-          ExUnit.Case.test test_name(__MODULE__, "matchers"), var!(context) do
+          ExUnit.Case.test test_name(__MODULE__, "should have passing matchers"), var!(context) do
             _ = var!(context)
             matcher_errors = unquote(matchers)
             matcher_errors = Enum.reject(matcher_errors, &is_nil/1)
@@ -78,11 +78,11 @@ defmodule ShouldI.With do
 
   def test_name(module, name) do
     path = Module.get_attribute(module, :shouldi_with_path)
-    "with: " <> path_to_name(path) <> ": " <> name
+    "with '" <> path_to_name(path) <> "': " <> name
   end
 
   defp path_to_name(path) do
-    Enum.join(path, ", ")
+    Enum.join(path, " AND ")
   end
 
   def starts_with?([], _),
