@@ -20,6 +20,7 @@ defmodule ShouldI.With do
       quote unquote: false do
         matchers = @shouldi_matchers
                 |> Enum.reverse
+                |> IO.inspect
                 |> prepare_matchers
 
         if matchers != [] do
@@ -95,7 +96,11 @@ defmodule ShouldI.With do
     do: false
 
   def prepare_matchers(matchers) do
-    Enum.map(matchers, fn {call, code} ->
+    Enum.map(matchers, fn {call, meta, code} ->
+      code = Macro.prewalk(code, fn ast ->
+        Macro.update_meta(ast, &Keyword.merge(&1, meta))
+      end)
+
       quote do
         try do
           unquote(code)
