@@ -20,7 +20,6 @@ defmodule ShouldI.With do
       quote unquote: false do
         matchers = @shouldi_matchers
                 |> Enum.reverse
-                |> IO.inspect
                 |> prepare_matchers
 
         if matchers != [] do
