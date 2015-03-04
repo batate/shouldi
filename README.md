@@ -175,7 +175,7 @@ When running tests asynchronously it can be useful to have a way to generate IDs
 One Experiment, Multiple Measurements
 -------------------------------------
 
-The philosophy is that experiments go in `setup` and experiments go into matchers. `shouldi` will make sure that the 
+The philosophy is that experiments go in `setup` and measurements go into matchers. `shouldi` will make sure that the context is passed between them cleanly so that things compose correctly. 
 
 When you run a `shouldi` test, for each context: 
 
