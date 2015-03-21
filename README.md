@@ -29,6 +29,12 @@ use ExUnit.Case
 ...
 ~~~
 
+To get nice formatting of matcher errors ShouldI's formatter needs to be added to ExUnit. Replace `ExUnit.start()` in your `test_helper.exs` file with:
+
+~~~elixir
+ExUnit.start(formatters: [ShouldI.CLIFormatter])
+~~~
+
 Name tests with `should` 
 ------------
 When you're testing behavior, you can get better names with a more descriptive macro. The test code...
