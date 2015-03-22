@@ -42,6 +42,7 @@ defmodule ShouldI do
   defmacro __using__(_) do
     quote do
       @shouldi_with_path []
+      @shouldi_matchers []
 
       import ShouldI
       import ExUnit.Callbacks, except: [setup: 1, setup: 2]

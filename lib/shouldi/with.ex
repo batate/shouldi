@@ -9,9 +9,10 @@ defmodule ShouldI.With do
         import ShouldI, except: [setup: 1, setup: 2]
         import ShouldI.With
 
-        @shouldi_matchers []
-        path = @shouldi_with_path
+        matchers = @shouldi_matchers
+        path     = @shouldi_with_path
         @shouldi_with_path [unquote(context)|path]
+        @shouldi_matchers  []
 
         unquote(block)
       end
@@ -36,6 +37,8 @@ defmodule ShouldI.With do
         end
 
         @shouldi_with_path path
+        # Why do we have to Macro.escape here? Without we get "unhandled operator ->"
+        @shouldi_matchers Macro.escape(matchers)
       end
 
     quote do

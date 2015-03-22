@@ -36,5 +36,14 @@ defmodule ContextMatcherTest do
     end
 
     should_assign_key one: "one"
+
+    with "a nested context" do
+      setup context do
+        assign context,
+          one: "not one"
+      end
+
+      should_assign_key one: "not one"
+    end
   end
 end
