@@ -71,4 +71,21 @@ defmodule ShouldI.Matchers.Plug do
       assert var!(context).connection.resp_body =~ ~r"#{unquote(expected)}"
     end
   end
+
+  @doc """
+  The connection body (`connection.resp_body`) should be the JSON equivalent of
+  the expected result.
+
+      setup context do
+        some_plug_call_returning_a_context_having_a_connection_key
+      end
+
+      should_return_json_of %{ "foo" => "bar" }
+  """
+  defmatcher should_return_json_of(json) do
+    quote do
+      resp_body = var!(context).connection.resp_body
+      assert Poison.Parser.parse!(resp_body) == unquote(json)
+    end
+  end
 end

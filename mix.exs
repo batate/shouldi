@@ -24,7 +24,8 @@ defmodule Shouldi.Mixfile do
   end
 
   defp deps do
-    [{:ex_doc, only: :dev},
+    [{:poison, []},
+     {:ex_doc, only: :dev},
      {:earmark, only: :dev}]
   end
 
