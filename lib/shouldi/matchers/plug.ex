@@ -70,15 +70,8 @@ defmodule ShouldI.Matchers.Plug do
   """
   defmatcher should_match_body_to(expected) do
     quote do
-      plug_should_match_body_to(unquote(expected), var!(context))
+      assert var!(context).connection.resp_body =~ unquote(expected)
     end
   end
 
-  def plug_should_match_body_to( string, context ) when is_binary(string) do
-    assert context.connection.resp_body =~ ~r/#{string}/
-  end
-
-  def plug_should_match_body_to( regex, context ) do
-    assert context.connection.resp_body =~ regex
-  end
 end
