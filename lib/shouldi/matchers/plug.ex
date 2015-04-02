@@ -60,6 +60,8 @@ defmodule ShouldI.Matchers.Plug do
   @doc """
   The connection body (`connection.resp_body`) should match the expected result.
 
+  Accepts a String or a Regex as the expected result to match.
+
       setup context do
         some_plug_call_returning_a_context_having_a_connection_key
       end
@@ -68,7 +70,8 @@ defmodule ShouldI.Matchers.Plug do
   """
   defmatcher should_match_body_to(expected) do
     quote do
-      assert var!(context).connection.resp_body =~ ~r"#{unquote(expected)}"
+      assert var!(context).connection.resp_body =~ unquote(expected)
     end
   end
+
 end

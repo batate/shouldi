@@ -13,5 +13,6 @@ defmodule PlugMatcherTest do
   with "context" do
     should_respond_with :success
     should_match_body_to "test"
+    should_match_body_to ~r/test/
   end
 end
