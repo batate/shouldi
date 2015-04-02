@@ -12,7 +12,7 @@ defmodule ShouldI do
         with "necessary_key" do
           setup context do
             assign context,
-              necessary_key: :neccessary_value
+              necessary_key: :necessary_value
           end
 
           should( "have necessary key", context ) do
@@ -22,7 +22,7 @@ defmodule ShouldI do
           with "sometimes_necessary_key" do
             setup context do
               assign context,
-                :sometimes_necessary_key, :sometimes_neccessary_value
+                :sometimes_necessary_key, :sometimes_necessary_value
             end
 
             # matchers to handle common testing idioms
@@ -80,7 +80,7 @@ defmodule ShouldI do
 
   ## Examples
       should "add two numbers", do: (assert 2 + 2 = 4)
-      should "check conext for :key", do: (assert context.key == :value)
+      should "check context for :key", do: (assert context.key == :value)
 
   """
   defmacro should(name, var \\ quote(do: _), options) do
