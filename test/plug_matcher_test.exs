@@ -1,5 +1,4 @@
 defmodule PlugMatcherTest do
-  use ExUnit.Case
   use ShouldI
   import ShouldI.Matchers.Plug
 

@@ -1,5 +1,4 @@
 defmodule ContextMatcherTest do
-  use ExUnit.Case
   use ShouldI
   import ShouldI.Matchers.Context
 

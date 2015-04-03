@@ -1,10 +1,9 @@
 defmodule ShouldTest do
-  use ExUnit.Case
   use ShouldI
 
   setup context do
     Map.put(context, :setup, :outer)
-    Dict.put( context, :outer, :setup)
+    Dict.put(context, :outer, :setup)
   end
 
   should "outer" do
@@ -40,6 +39,3 @@ defmodule ShouldTest do
     end
   end
 end
-
-
-
