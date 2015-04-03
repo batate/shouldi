@@ -44,6 +44,7 @@ defmodule ShouldI do
       @shouldi_with_path []
       @shouldi_matchers []
 
+      use ExUnit.Case
       import ShouldI
       import ExUnit.Callbacks, except: [setup: 1, setup: 2]
     end
