@@ -39,12 +39,12 @@ defmodule ShouldI do
       should_match_body_to "<div id="test">
   """
 
-  defmacro __using__(_) do
+  defmacro __using__(args) do
     quote do
       @shouldi_with_path []
       @shouldi_matchers []
 
-      use ExUnit.Case
+      use ExUnit.Case, unquote(args)
       import ShouldI
       import ExUnit.Callbacks, except: [setup: 1, setup: 2]
     end
