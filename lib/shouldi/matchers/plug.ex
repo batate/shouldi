@@ -68,6 +68,14 @@ defmodule ShouldI.Matchers.Plug do
 
       should_match_body_to "this_string_must_be_present_in_body"
   """
+  defmatcher should_match_body_to(expecteds) when is_list(expecteds) do
+    for expected <- expecteds do
+      quote do
+        assert var!(context).connection.resp_body =~ unquote(expected)
+      end
+    end
+  end
+
   defmatcher should_match_body_to(expected) do
     quote do
       assert var!(context).connection.resp_body =~ unquote(expected)
