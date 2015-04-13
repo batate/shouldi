@@ -24,7 +24,7 @@ defmodule ShouldI.With do
                 |> prepare_matchers
 
         if matchers != [] do
-          @tag shouldi_with_path: @shouldi_with_path
+          @tag shouldi_with_path: Enum.reverse(@shouldi_with_path)
           ExUnit.Case.test test_name(__MODULE__, "should have passing matchers"), var!(context) do
             _ = var!(context)
             matcher_errors = unquote(matchers)
@@ -54,7 +54,7 @@ defmodule ShouldI.With do
 
   defmacro test(name, var \\ quote(do: _), opts) do
     quote do
-      @tag shouldi_with_path: @shouldi_with_path
+      @tag shouldi_with_path: Enum.reverse(@shouldi_with_path)
       ExUnit.Case.test(test_name(__MODULE__, unquote(name)), unquote(var), unquote(opts))
     end
   end
@@ -68,7 +68,7 @@ defmodule ShouldI.With do
     quote do
       shouldi_with_path = Enum.reverse(@shouldi_with_path)
       ExUnit.Callbacks.setup unquote(var) do
-        shouldi_path = Enum.reverse(unquote(var)[:shouldi_with_path] || [])
+        shouldi_path = unquote(var)[:shouldi_with_path] || []
 
         if unquote(if_quote) do
           {:ok, unquote(block)}
@@ -85,7 +85,8 @@ defmodule ShouldI.With do
   end
 
   defp path_to_name(path) do
-    Enum.join(path, " AND ")
+    Enum.reverse(path)
+    |> Enum.join(" AND ")
   end
 
   def starts_with?([], _),
