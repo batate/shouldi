@@ -40,14 +40,54 @@ defmodule ShouldI do
   """
 
   defmacro __using__(args) do
-    quote do
-      @shouldi_with_path []
-      @shouldi_matchers []
+    definition =
+      quote do
+        @shouldi_with_path []
+        @shouldi_matchers []
 
-      use ExUnit.Case, unquote(args)
-      import ShouldI
-      import ExUnit.Callbacks, except: [setup: 1, setup: 2]
-    end
+        use ExUnit.Case, unquote(args)
+        import ShouldI
+        import ExUnit.Callbacks, except: [setup: 1, setup: 2]
+      end
+
+    helpers =
+      quote unquote: false do
+        # Store common code in a function definition to
+        # avoid injecting many variables into a context.
+        var!(define_matchers, ShouldI) = fn ->
+          matchers = @shouldi_matchers
+                  |> Enum.reverse
+                  |> ShouldI.With.prepare_matchers
+
+          if matchers != [] do
+            @tag shouldi_with_path: Enum.reverse(@shouldi_with_path)
+            ExUnit.Case.test ShouldI.With.test_name(__MODULE__, "should have passing matchers"), var!(context) do
+              _ = var!(context)
+              matcher_errors = unquote(matchers)
+              matcher_errors = Enum.reject(matcher_errors, &is_nil/1)
+
+              if matcher_errors != [] do
+                raise ShouldI.MultiError, errors: matcher_errors
+              end
+            end
+          end
+        end
+
+        var!(define_setup, ShouldI) = fn var, block ->
+          shouldi_with_path = Enum.reverse(@shouldi_with_path)
+          ExUnit.Callbacks.setup unquote(var) do
+            shouldi_path = unquote(var)[:shouldi_with_path] || []
+
+            if ShouldI.With.starts_with?(unquote(shouldi_with_path), shouldi_path) do
+              {:ok, unquote(block)}
+            else
+              :ok
+            end
+          end
+        end
+      end
+
+    [definition, helpers]
   end
 
   defmacro setup(var \\ quote(do: _), [do: block]) do
