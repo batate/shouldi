@@ -84,6 +84,7 @@ defmodule MyFatTest do
     should( "have necessary key", context ) do
       assert context.necessary_key == :necessary_value
     end
+  end
 
   with "sometimes_necessary_key" do
     setup context do
