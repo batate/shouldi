@@ -19,25 +19,8 @@ defmodule ShouldI.With do
 
     quote2 =
       quote unquote: false do
-        matchers = @shouldi_matchers
-                |> Enum.reverse
-                |> prepare_matchers
-
-        if matchers != [] do
-          @tag shouldi_with_path: Enum.reverse(@shouldi_with_path)
-          ExUnit.Case.test test_name(__MODULE__, "should have passing matchers"), var!(context) do
-            _ = var!(context)
-            matcher_errors = unquote(matchers)
-            matcher_errors = Enum.reject(matcher_errors, &is_nil/1)
-
-            if matcher_errors != [] do
-              raise ShouldI.MultiError, errors: matcher_errors
-            end
-          end
-        end
-
+        var!(define_matchers, ShouldI).()
         @shouldi_with_path path
-        # Why do we have to Macro.escape here? Without we get "unhandled operator ->"
         @shouldi_matchers Macro.escape(matchers)
       end
 
@@ -60,22 +43,8 @@ defmodule ShouldI.With do
   end
 
   defmacro setup(var \\ quote(do: _), [do: block]) do
-    if_quote =
-      quote unquote: false do
-        starts_with?(unquote(shouldi_with_path), shouldi_path)
-      end
-
     quote do
-      shouldi_with_path = Enum.reverse(@shouldi_with_path)
-      ExUnit.Callbacks.setup unquote(var) do
-        shouldi_path = unquote(var)[:shouldi_with_path] || []
-
-        if unquote(if_quote) do
-          {:ok, unquote(block)}
-        else
-          :ok
-        end
-      end
+      var!(define_setup, ShouldI).(unquote(Macro.escape(var)), unquote(Macro.escape(block)))
     end
   end
 
