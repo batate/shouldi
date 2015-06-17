@@ -6,6 +6,7 @@ defmodule ShouldI.Matchers.Plug do
 
   import ExUnit.Assertions
   import ShouldI.Matcher
+  alias ShouldI.Matchers.Plug
 
   @doc """
   The connection status (connection.status) should match the expected result.
@@ -29,31 +30,31 @@ defmodule ShouldI.Matchers.Plug do
   """
   defmatcher should_respond_with(expected_result) do
     quote do
-      plug_should_respond_with(unquote(expected_result), var!(context))
+      Plug.__should_respond_with__(unquote(expected_result), var!(context))
     end
   end
 
-  def plug_should_respond_with( :success, context ) do
+  def __should_respond_with__( :success, context ) do
     assert context.connection.status in 200..299
   end
 
-  def plug_should_respond_with( :redirect, context ) do
+  def __should_respond_with__( :redirect, context ) do
     assert context.connection.status in 300..399
   end
 
-  def plug_should_respond_with( :bad_request, context ) do
+  def __should_respond_with__( :bad_request, context ) do
     assert context.connection.status == 400
   end
 
-  def plug_should_respond_with( :unauthorized, context ) do
+  def __should_respond_with__( :unauthorized, context ) do
     assert context.connection.status == 401
   end
 
-  def plug_should_respond_with( :missing, context ) do
+  def __should_respond_with__( :missing, context ) do
     assert context.connection.status == 404
   end
 
-  def plug_should_respond_with( :error, context ) do
+  def __should_respond_with__( :error, context ) do
     assert context.connection.status in 500..599
   end
 
@@ -81,5 +82,4 @@ defmodule ShouldI.Matchers.Plug do
       assert var!(context).connection.resp_body =~ unquote(expected)
     end
   end
-
 end

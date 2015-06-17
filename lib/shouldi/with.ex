@@ -43,8 +43,22 @@ defmodule ShouldI.With do
   end
 
   defmacro setup(var \\ quote(do: _), [do: block]) do
+    if_quote =
+      quote unquote: false do
+        starts_with?(unquote(shouldi_with_path), shouldi_path)
+      end
+
     quote do
-      var!(define_setup, ShouldI).(unquote(Macro.escape(var)), unquote(Macro.escape(block)))
+      shouldi_with_path = Enum.reverse(@shouldi_with_path)
+      ExUnit.Callbacks.setup unquote(var) do
+        shouldi_path = unquote(var)[:shouldi_with_path] || []
+
+        if unquote(if_quote) do
+          {:ok, unquote(block)}
+        else
+          :ok
+        end
+      end
     end
   end
 

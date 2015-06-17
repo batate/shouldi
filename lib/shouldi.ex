@@ -72,19 +72,6 @@ defmodule ShouldI do
             end
           end
         end
-
-        var!(define_setup, ShouldI) = fn var, block ->
-          shouldi_with_path = Enum.reverse(@shouldi_with_path)
-          ExUnit.Callbacks.setup unquote(var) do
-            shouldi_path = unquote(var)[:shouldi_with_path] || []
-
-            if ShouldI.With.starts_with?(unquote(shouldi_with_path), shouldi_path) do
-              {:ok, unquote(block)}
-            else
-              :ok
-            end
-          end
-        end
       end
 
     [definition, helpers]
