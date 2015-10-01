@@ -122,6 +122,24 @@ with "a logged in admin" do
 end
 ~~~
 
+Use `assign` to set the context
+------------
+`assign` is a macro that is syntactic sugar for updating the `context`.
+
+~~~elixir
+setup context do
+  Dict.put context, :necessary_key, :necessary_value
+end
+~~~
+
+becomes
+
+~~~elixir
+setup context do
+  assign context, necessary_key: :necessary_value
+end
+~~~
+
 Use matchers simplify tests
 ---------------------------
 
