@@ -9,7 +9,7 @@ defmodule PlugMatcherTest do
      })
   end
 
-  with "context" do
+  having "context" do
     should_respond_with :success
     should_match_body_to "test"
     should_match_body_to ~r/test/

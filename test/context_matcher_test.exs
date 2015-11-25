@@ -9,7 +9,7 @@ defmodule ContextMatcherTest do
       tuple_one: {:ok, 2}
   end
 
-  with "context" do
+  having "context" do
     should_assign_key one: 1
     should_have_key :one
     should_not_have_key :two
@@ -17,7 +17,7 @@ defmodule ContextMatcherTest do
     should_match_key tuple_one: {:ok, ^(context[:one] + context[:one])}
   end
 
-  with "another level" do
+  having "another level" do
     setup context do
       assign context,
         two: 2
@@ -28,7 +28,7 @@ defmodule ContextMatcherTest do
     should_have_key :one
   end
 
-  with "an overwritten key" do
+  having "an overwritten key" do
     setup context do
       assign context,
         one: "one"
@@ -36,7 +36,7 @@ defmodule ContextMatcherTest do
 
     should_assign_key one: "one"
 
-    with "a nested context" do
+    having "a nested context" do
       setup context do
         assign context,
           one: "not one"

@@ -10,7 +10,7 @@ defmodule ShouldTest do
     assert 1 + 2 == 3
   end
 
-  with "an inner context" do
+  having "an inner context" do
     setup(context) do
       context
       |> Dict.put(:setup, :inner)
@@ -23,10 +23,10 @@ defmodule ShouldTest do
 
     test "should set uid for both setup and test", context do
       assert uid("foo") == context[:uid]
-      assert uid("bar") == "Elixir.ShouldTest.test with 'an inner context': should set uid for both setup and test bar"
+      assert uid("bar") == "Elixir.ShouldTest.test having 'an inner context': should set uid for both setup and test bar"
     end
 
-    with "another inner context" do
+    having "another inner context" do
       setup(context) do
         context
         |> Dict.put(:setup2, :even_more_inner)

@@ -2,14 +2,14 @@ defmodule ShouldI do
   @moduledoc """
   ShouldI is a testing DSL around ExUnit.
 
-  ShouldI supports with blocks for nested contexts,
+  ShouldI supports having blocks for nested contexts,
   convenience apis for behavioral naming.
 
   ## Examples
 
       defmodule MyFatTest do
 
-        with "necessary_key" do
+        having "necessary_key" do
           setup context do
             assign context,
               necessary_key: :necessary_value
@@ -19,7 +19,7 @@ defmodule ShouldI do
             assert context.necessary_key == :necessary_value
           end
 
-          with "sometimes_necessary_key" do
+          having "sometimes_necessary_key" do
             setup context do
               assign context,
                 :sometimes_necessary_key, :sometimes_necessary_value
@@ -35,14 +35,14 @@ defmodule ShouldI do
 
   For example, these matchers are for plug:
 
-      should_respond_with :success
+      should_respond_having :success
       should_match_body_to "<div id="test">
   """
 
   defmacro __using__(args) do
     definition =
       quote do
-        @shouldi_with_path []
+        @shouldi_having_path []
         @shouldi_matchers []
 
         use ExUnit.Case, unquote(args)
@@ -57,11 +57,11 @@ defmodule ShouldI do
         var!(define_matchers, ShouldI) = fn ->
           matchers = @shouldi_matchers
                   |> Enum.reverse
-                  |> ShouldI.With.prepare_matchers
+                  |> ShouldI.Having.prepare_matchers
 
           if matchers != [] do
-            @tag shouldi_with_path: Enum.reverse(@shouldi_with_path)
-            ExUnit.Case.test ShouldI.With.test_name(__MODULE__, "should have passing matchers"), var!(context) do
+            @tag shouldi_having_path: Enum.reverse(@shouldi_having_path)
+            ExUnit.Case.test ShouldI.Having.test_name(__MODULE__, "should have passing matchers"), var!(context) do
               _ = var!(context)
               matcher_errors = unquote(matchers)
               matcher_errors = Enum.reject(matcher_errors, &is_nil/1)
@@ -103,8 +103,8 @@ defmodule ShouldI do
   end
 
   @doc """
-  Create a test case with an optional context. This macro thinly wraps ExUnit's
-  test macro and names the test case with "should".
+  Create a test case having an optional context. This macro thinly wraps ExUnit's
+  test macro and names the test case having "should".
 
   ## Examples
       should "add two numbers", do: (assert 2 + 2 = 4)
@@ -119,28 +119,28 @@ defmodule ShouldI do
 
   @doc """
   A function for wrapping together common setup code.
-  with is useful for nesting setup requirements:
+  having is useful for nesting setup requirements:
 
   ## Examples
 
-      with "a logged in user" do
+      having "a logged in user" do
         setup do
           ... setup a logged in user
         end
 
-        with "a get to :index" do
+        having "a get to :index" do
           setup do
             assign context,
             response: get(:index)
           end
 
-          should_respond_with :success
+          should_respond_having :success
           should_match_body_to "some_string_to_match"
         end
       end
   """
-  defmacro with(context, opts) do
-    ShouldI.With.with(__CALLER__, context, opts)
+  defmacro having(context, opts) do
+    ShouldI.Having.having(__CALLER__, context, opts)
   end
 
   @doc """
