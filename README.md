@@ -155,13 +155,13 @@ having "a logged in admin" do
     setup context do
       # process get
     end
-    should_respond_having :success
+    should_respond_with :success
     should_match_body_to "<html>"
   end
 end
 ~~~
 
-The two matchers, `should_respond_having` and `should_match_body_to`, will run in a single test, against the context created in the `setup` function (or setup functions, if you've used multiple contexts). Even if both of these tests fail, you'll see two failures in your output.
+The two matchers, `should_respond_with` and `should_match_body_to`, will run in a single test, against the context created in the `setup` function (or setup functions, if you've used multiple contexts). Even if both of these tests fail, you'll see two failures in your output.
 
 Create your own matchers with `defmatcher`
 ------------------------
@@ -189,7 +189,7 @@ Existing Matchers
     - `should_have_key key`: assert that `key` exists in the context
     - `should_not_have_key key`: assert that `key` does not exist in the context
 - Plug
-    - `should_respond_having expected`: Assert that the value for `context.connection.status` in the context matches a reasonable value for `:success`, `:redirect`, `:bad_request`, `:unauthorized`, `:missing` or `:error`
+    - `should_respond_with expected`: Assert that the value for `context.connection.status` in the context matches a reasonable value for `:success`, `:redirect`, `:bad_request`, `:unauthorized`, `:missing` or `:error`
     - `should_match_body_to expected`: Assert that the value for `context.resp_body` contains the text `expected`.
 
 Unique IDs
