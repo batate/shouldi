@@ -1,9 +1,22 @@
 defmodule ShouldTest do
   use ShouldI
 
+  setup_all do
+    IO.puts "this is setup_all"
+    on_exit fn ->
+      IO.puts "this is on_exit on setup_all"
+    end
+  end
+
   setup context do
+    IO.puts "this is setup"
+
     Map.put(context, :setup, :outer)
     Dict.put(context, :outer, :setup)
+
+    on_exit fn ->
+      IO.puts "this is on_exit on setup"
+    end
   end
 
   should "outer" do
@@ -12,6 +25,12 @@ defmodule ShouldTest do
 
   having "an inner context" do
     setup(context) do
+      IO.puts "this is setup in having"
+
+      on_exit fn ->
+        IO.puts "this is on_exit on setup in having"
+      end
+
       context
       |> Dict.put(:setup, :inner)
       |> Dict.put(:uid, uid("foo"))
@@ -28,6 +47,12 @@ defmodule ShouldTest do
 
     having "another inner context" do
       setup(context) do
+        IO.puts "this is setup in nested another having"
+
+        on_exit fn ->
+          IO.puts "this is on_exit on setup in nested another having"
+        end
+
         context
         |> Dict.put(:setup2, :even_more_inner)
       end
