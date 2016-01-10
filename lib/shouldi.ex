@@ -79,7 +79,13 @@ defmodule ShouldI do
 
   defmacro setup(var \\ quote(do: _), [do: block]) do
     quote do
-      ExUnit.Callbacks.setup(unquote(var), do: {:ok, unquote(block)})
+      ExUnit.Callbacks.setup unquote(var) do
+        case unquote(block) do
+          :ok -> :ok
+          {:ok, list} -> {:ok, list}
+          map -> {:ok, map}
+        end
+      end
     end
   end
 
