@@ -128,7 +128,8 @@ Use `assign` to set the context
 
 ~~~elixir
 setup context do
-  Dict.put context, :necessary_key, :necessary_value
+  Dict.put(context, :necessary_key, :necessary_value)
+    |> Dict.put :many_key, ~W(white space delimited no interp)
 end
 ~~~
 
@@ -136,7 +137,8 @@ becomes
 
 ~~~elixir
 setup context do
-  assign context, necessary_key: :necessary_value
+  assign(context, necessary_key: :necessary_value)
+    |> assign many_key: ~W(white space delimited no interp)
 end
 ~~~
 
