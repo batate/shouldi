@@ -42,7 +42,7 @@ defmodule ShouldI.Having do
     end
   end
 
-  defmacro setup(var \\ quote(do: _), [do: block]) do
+  defmacro setup(var \\ quote(do: context), [do: block]) do
     if_quote =
       quote unquote: false do
         starts_with?(unquote(shouldi_having_path), shouldi_path)
@@ -54,7 +54,11 @@ defmodule ShouldI.Having do
         shouldi_path = unquote(var)[:shouldi_having_path] || []
 
         if unquote(if_quote) do
-          {:ok, unquote(block)}
+          case unquote(block) do
+            :ok -> :ok
+            {:ok, list} -> {:ok, list}
+            map  -> {:ok, map}
+          end
         else
           :ok
         end

@@ -39,3 +39,44 @@ defmodule ShouldTest do
     end
   end
 end
+
+defmodule ShouldSetupTest do
+  use ShouldI
+
+  setup do
+    :ok
+  end
+
+  setup do
+    {:ok, [context: :setup]}
+  end
+
+  setup context do
+    assert context[:context] == :setup
+    context |> Dict.put(:context, :setup_context)
+  end
+
+  should "setup context", context do
+    assert context[:context] == :setup_context
+  end
+
+  having "having context" do
+
+    setup do
+      :ok
+    end
+
+    setup do
+      {:ok, [context: :setup_in_having]}
+    end
+
+    setup context do
+      assert context[:context] == :setup_in_having
+      context |> Dict.put(:context, :setup_in_having_context)
+    end
+
+    test "setup context", context do
+      assert context[:context] == :setup_in_having_context
+    end
+  end
+end
