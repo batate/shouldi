@@ -9,6 +9,7 @@ defmodule Shouldi.Mixfile do
      elixir: "~> 1.0",
      deps: deps(),
      name: "ShouldI",
+     source_url: "https://github.com/batate/shouldi",
      docs: docs(),
      description: "Elixir testing libraries with support for nested contexts",
      package: package()]
@@ -33,7 +34,8 @@ defmodule Shouldi.Mixfile do
   end
 
   defp docs do
-    [main: "readme",
+    [source_ref: "v" <> @version,
+     main: "readme",
      extras: ["README.md"]]
   end
 end
