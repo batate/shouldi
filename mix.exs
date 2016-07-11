@@ -1,19 +1,17 @@
 defmodule Shouldi.Mixfile do
   use Mix.Project
 
+  @version "0.3.0"
+
   def project do
     [app: :shouldi,
-     version: "0.3.0",
+     version: @version,
      elixir: "~> 1.0",
-     deps: deps,
+     deps: deps(),
      name: "ShouldI",
-     source_url: "https://github.com/batate/shouldi",
-     docs: fn ->
-       {ref, 0} = System.cmd("git", ["rev-parse", "--verify", "--quiet", "HEAD"])
-       [source_ref: ref, main: "extra-readme", extras: ["README.md"]]
-     end,
+     docs: docs(),
      description: "Elixir testing libraries with support for nested contexts",
-     package: package]
+     package: package()]
   end
 
   # Configuration for the OTP application
@@ -32,5 +30,10 @@ defmodule Shouldi.Mixfile do
     [maintainers: ["Bruce Tate", "Eric Meadows-Jönsson"],
      licenses: ["Apache 2.0"],
      links: %{"Github" => "https://github.com/batate/shouldi"}]
+  end
+
+  defp docs do
+    [main: "readme",
+     extras: ["README.md"]]
   end
 end
