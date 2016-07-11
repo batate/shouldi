@@ -67,7 +67,7 @@ defmodule ShouldI do
               matcher_errors = Enum.reject(matcher_errors, &is_nil/1)
 
               if matcher_errors != [] do
-                raise ShouldI.MultiError, errors: matcher_errors
+                raise ExUnit.MultiError, errors: matcher_errors
               end
             end
           end
@@ -154,13 +154,5 @@ defmodule ShouldI do
   """
   def assign(context, options) do
     Dict.merge(context, options)
-  end
-end
-
-defmodule ShouldI.MultiError do
-  defexception [:errors]
-
-  def message(_) do
-    "multiple matcher errors"
   end
 end

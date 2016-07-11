@@ -86,7 +86,7 @@ defmodule ShouldI.Having do
     do: false
 
   def prepare_matchers(matchers) do
-    Enum.map(matchers, fn {call, meta, code} ->
+    Enum.map(matchers, fn {_call, meta, code} ->
       code = Macro.prewalk(code, fn ast ->
         Macro.update_meta(ast, &Keyword.merge(&1, meta))
       end)
@@ -97,8 +97,7 @@ defmodule ShouldI.Having do
           nil
         catch
           kind, error ->
-            stacktrace = System.stacktrace
-            {unquote(Macro.escape(call)), {kind, error, stacktrace}}
+            {kind, error, System.stacktrace}
         end
       end
     end)
